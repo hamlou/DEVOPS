@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Welcome Email</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f4f7fa;
+        padding: 20px;
+        line-height: 1.6;
+      }
+      .email-wrapper {
+        max-width: 600px;
+        margin: 0 auto;
+        background-color: #ffffff;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      }
+      .email-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        padding: 50px 30px;
+        text-align: center;
+        color: #ffffff;
+      }
+      .email-header h1 {
+        font-size: 32px;
+        margin-bottom: 10px;
+        font-weight: 700;
+      }
+      .email-header p {
+        font-size: 16px;
+        opacity: 0.95;
+      }
+      .email-body {
+        padding: 40px 30px;
+        color: #333333;
+      }
+      .greeting {
+        font-size: 20px;
+        font-weight: 600;
+        color: #667eea;
+        margin-bottom: 20px;
+      }
+      .message {
+        font-size: 16px;
+        line-height: 1.8;
+        color: #555555;
+        margin-bottom: 25px;
+      }
+      .features {
+        background-color: #f8f9ff;
+        border-left: 4px solid #667eea;
+        padding: 20px;
+        margin: 25px 0;
+        border-radius: 6px;
+      }
+      .features h3 {
+        color: #667eea;
+        font-size: 18px;
+        margin-bottom: 15px;
+      }
+      .features ul {
+        list-style: none;
+        padding: 0;
+      }
+      .features li {
+        padding: 8px 0;
+        color: #555555;
+        font-size: 15px;
+      }
+      .features li:before {
+        content: "✓";
+        color: #667eea;
+        font-weight: bold;
+        margin-right: 10px;
+      }
+      .cta-container {
+        text-align: center;
+        margin: 35px 0;
+      }
+      .cta-button {
+        display: inline-block;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: #ffffff;
+        padding: 16px 40px;
+        text-decoration: none;
+        border-radius: 50px;
+        font-size: 18px;
+        font-weight: 600;
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        transition: transform 0.3s ease;
+      }
+      .cta-button:hover {
+        transform: translateY(-2px);
+      }
+      .divider {
+        height: 1px;
+        background: linear-gradient(
+          to right,
+          transparent,
+          #e0e0e0,
+          transparent
+        );
+        margin: 30px 0;
+      }
+      .email-footer {
+        background-color: #f8f9fa;
+        padding: 30px;
+        text-align: center;
+        color: #777777;
+        font-size: 14px;
+      }
+      .email-footer p {
+        margin: 5px 0;
+      }
+      .social-links {
+        margin: 20px 0;
+      }
+      .social-links a {
+        display: inline-block;
+        margin: 0 10px;
+        color: #667eea;
+        text-decoration: none;
+        font-weight: 600;
+      }
+      @media only screen and (max-width: 600px) {
+        .email-header {
+          padding: 30px 20px;
+        }
+        .email-header h1 {
+          font-size: 26px;
+        }
+        .email-body {
+          padding: 30px 20px;
+        }
+        .cta-button {
+          padding: 14px 30px;
+          font-size: 16px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="email-wrapper">
+      <!-- Header Section -->
+      <div class="email-header">
+        <h1>🎉 Welcome Aboard!</h1>
+        <p>We're thrilled to have you join our community</p>
+      </div>
+
+      <!-- Body Section -->
+      <div class="email-body">
+        <div class="greeting">Hello {{ username }},</div>
+
+        <div class="message">
+          Thank you for registering with <strong>{{ sender_name }}</strong>!
+          We're excited to have you on board and can't wait for you to explore
+          everything our platform has to offer.
+        </div>
+
+        <div class="message">
+          Your account has been successfully created, and you're now ready to
+          dive into an amazing experience designed just for you.
+        </div>
+
+        <!-- Features Box -->
+        <div class="features">
+          <h3>🚀 What's Next?</h3>
+          <ul>
+            <li>Explore premium content and exclusive features</li>
+            <li>Personalize your profile and preferences</li>
+            <li>Connect with our vibrant community</li>
+            <li>Get access to special rewards and benefits</li>
+          </ul>
+        </div>
+
+        <!-- Call-to-Action Button -->
+        <div class="cta-container">
+          <a href="{{ site_link }}" class="cta-button">
+            🚀 Start Your Journey
+          </a>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="message" style="font-size: 15px; color: #777">
+          If you have any questions or need assistance, our support team is
+          always here to help. Feel free to reach out anytime!
+        </div>
+      </div>
+
+      <!-- Footer Section -->
+      <div class="email-footer">
+        <p style="font-weight: 600; color: #555; margin-bottom: 10px">
+          Best regards,<br />
+          The {{ sender_name }} Team
+        </p>
+
+        <div class="divider" style="margin: 20px auto; max-width: 200px"></div>
+
+        <p style="font-size: 12px; color: #999; margin-top: 15px">
+          &copy; {{ current_year }} {{ sender_name }}. All rights reserved.
+        </p>
+
+        <p style="font-size: 12px; color: #999; margin-top: 10px">
+          You're receiving this email because you signed up for an account.
+        </p>
+      </div>
+    </div>
+  </body>
+</html>
