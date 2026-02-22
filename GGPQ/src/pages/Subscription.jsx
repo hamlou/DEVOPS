@@ -27,14 +27,14 @@ const Subscription = () => {
 
   return (
     <div className="p-8 md:p-16 max-w-7xl mx-auto min-h-screen">
-      <SEO 
-        title="Subscription Plans" 
-        description="Choose the perfect TFC membership plan to unlock 4K HDR streaming and exclusive live events." 
+      <SEO
+        title="Subscription Plans"
+        description="Choose the perfect TFC membership plan to unlock 4K HDR streaming and exclusive live events."
       />
 
       <AnimatePresence>
         {showSuccess && (
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.9 }}
@@ -46,7 +46,7 @@ const Subscription = () => {
               </div>
               <h3 className="text-4xl font-black uppercase mb-4 tracking-tighter">Welcome to the Elite</h3>
               <p className="text-gray-400 mb-8 leading-relaxed">Your subscription has been successfully activated. You now have unlimited access to all TFC premium content.</p>
-              <button 
+              <button
                 onClick={() => setShowSuccess(false)}
                 className="w-full bg-primary text-black font-black py-4 rounded-2xl uppercase tracking-[0.2em] hover:scale-105 transition-transform"
               >
@@ -63,7 +63,7 @@ const Subscription = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         {mockSubscriptionPlans.map((plan) => (
-          <motion.div 
+          <motion.div
             key={plan.id}
             whileHover={{ y: -10 }}
             className={`relative bg-surface p-8 rounded-[2.5rem] border-2 transition-all ${user?.plan === plan.name ? 'border-primary shadow-2xl shadow-primary/20' : 'border-gray-800'}`}
@@ -73,7 +73,7 @@ const Subscription = () => {
                 Current Plan
               </div>
             )}
-            
+
             <div className="mb-8">
               <h3 className="text-2xl font-black uppercase mb-2 tracking-tight">{plan.name}</h3>
               <div className="flex items-baseline space-x-1">
@@ -91,10 +91,10 @@ const Subscription = () => {
               ))}
             </ul>
 
-            <button 
+            <button
               disabled={user?.plan === plan.name}
               onClick={() => handleSelectPlan(plan)}
-              className={`w-full py-4 rounded-2xl font-black uppercase tracking-widest transition-all ${user?.plan === plan.name ? 'bg-gray-800 text-gray-500 cursor-not-allowed' : 'bg-primary hover:bg-yellow-500 text-black shadow-lg shadow-primary/20 hover:scale-105'}`}
+              className={`w-full py-4 rounded-2xl font-black uppercase tracking-widest transition-all ${user?.plan === plan.name ? 'bg-gray-800 text-gray-500 cursor-not-allowed' : 'bg-primary hover:bg-red-600 text-black shadow-lg shadow-primary/20 hover:scale-105'}`}
             >
               {user?.plan === plan.name ? 'Active' : 'Upgrade Now'}
             </button>
@@ -119,9 +119,9 @@ const Subscription = () => {
         </div>
       </div>
 
-      <PaymentModal 
-        isOpen={isPaymentOpen} 
-        onClose={() => setIsPaymentOpen(false)} 
+      <PaymentModal
+        isOpen={isPaymentOpen}
+        onClose={() => setIsPaymentOpen(false)}
         plan={selectedPlan}
         onPixelatedSuccess={handlePaymentSuccess}
       />

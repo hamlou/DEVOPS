@@ -12,19 +12,19 @@ const UpgradeModal = ({ isOpen, onClose }) => {
 
   return (
     <AnimatePresence>
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         className="fixed inset-0 z-[300] flex items-center justify-center p-4 bg-black/95 backdrop-blur-xl"
       >
-        <motion.div 
+        <motion.div
           initial={{ scale: 0.9, y: 20 }}
           animate={{ scale: 1, y: 0 }}
           exit={{ scale: 0.9, y: 20 }}
           className="bg-surface border border-primary/30 p-8 md:p-12 rounded-[3rem] max-w-lg w-full text-center shadow-2xl shadow-primary/10 relative"
         >
-          <button 
+          <button
             onClick={onClose}
             className="absolute top-6 right-6 p-2 text-gray-500 hover:text-white transition-colors"
           >
@@ -38,19 +38,19 @@ const UpgradeModal = ({ isOpen, onClose }) => {
           <h3 className="text-4xl font-black uppercase mb-4 tracking-tighter leading-none">
             Unlock TFC <span className="text-primary italic">Elite</span>
           </h3>
-          
+
           <p className="text-gray-400 mb-10 leading-relaxed text-sm">
             This premium live event is reserved for Pro members. Join the elite to experience 4K HDR streaming, zero ads, and exclusive rewards.
           </p>
 
           <div className="space-y-4">
-            <button 
+            <button
               onClick={() => { navigate('/subscription'); onClose(); }}
-              className="w-full bg-primary hover:bg-yellow-500 text-black font-black py-5 rounded-2xl uppercase tracking-[0.2em] transition-all transform hover:scale-[1.02] shadow-xl shadow-primary/20"
+              className="w-full bg-primary hover:bg-red-600 text-black font-black py-5 rounded-2xl uppercase tracking-[0.2em] transition-all transform hover:scale-[1.02] shadow-xl shadow-primary/20"
             >
               See Pricing Plans
             </button>
-            <button 
+            <button
               onClick={onClose}
               className="w-full text-gray-500 font-bold uppercase text-[10px] tracking-[0.3em] hover:text-white transition-colors"
             >

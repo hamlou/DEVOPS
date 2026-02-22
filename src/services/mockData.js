@@ -13,7 +13,7 @@ export const mockUser = {
 export const mockUsersList = [
   { id: 'u1', username: 'TFC_Explorer', email: 'explorer@tfc.tv', type: 'Free', plan: 'Basic', points: 100, role: 'admin' },
   { id: 'u2', username: 'John_Doe', email: 'john@gmail.com', type: 'Free', plan: 'Basic', points: 150, role: 'user' },
-  { id: 'u3', username: 'Sarah_Pro', email: 'sarah@tfc.tv', type: 'Premium', plan: 'Gold Pro', points: 1200, role: 'user' },
+  { id: 'u3', username: 'Sarah_Pro', email: 'sarah@tfc.tv', type: 'Premium', plan: 'Elite Red', points: 1200, role: 'user' },
   { id: 'u4', username: 'Gamer_X', email: 'gamerx@twitch.tv', type: 'Free', plan: 'Basic', points: 45, role: 'user' },
 ];
 
@@ -56,7 +56,7 @@ export const fetchAnalytics = () => Promise.resolve(mockAnalytics);
 
 export const mockSubscriptionPlans = [
   { id: 'p1', name: 'Basic', price: '$0', features: ['Standard Definition', 'With Ads', 'Limited Content'] },
-  { id: 'p2', name: 'Gold Pro', price: '$9.99/mo', features: ['4K Ultra HDR', 'Ad-Free', 'All Live Events', 'Priority Rewards'] },
+  { id: 'p2', name: 'Elite Red', price: '$9.99/mo', features: ['4K Ultra HDR', 'Ad-Free', 'All Live Events', 'Priority Rewards'] },
   { id: 'p3', name: 'Elite Annual', price: '$89.99/yr', features: ['All Pro Features', 'Save 25%', 'VIP Access', 'Exclusive Badges'] },
 ];
 

@@ -28,7 +28,7 @@ body {
   background: var(--bg);
   font-family: 'DM Sans', sans-serif;
   color: var(--text);
-  overflow: hidden;
+  overflow-x: hidden;
 }
 
 /* ── ANIMATED BACKGROUND ── */

@@ -37,15 +37,15 @@ const RewardsManager = () => {
             <h3 className="text-2xl font-black uppercase tracking-tight mb-8">Adjust Balances</h3>
             <div className="bg-black/40 flex items-center px-6 py-3 rounded-2xl border border-gray-800 focus-within:border-primary transition-all mb-8">
               <Search className="w-5 h-5 text-gray-500 mr-4" />
-              <input 
-                type="text" 
-                placeholder="Find user to adjust points..." 
+              <input
+                type="text"
+                placeholder="Find user to adjust points..."
                 className="bg-transparent border-none outline-none text-white font-bold w-full"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
               />
             </div>
-            
+
             <div className="space-y-4">
               {users.slice(0, 4).map(u => (
                 <div key={u.id} className="flex items-center justify-between p-4 bg-white/5 rounded-2xl border border-transparent hover:border-primary/30 transition-all group">
@@ -80,14 +80,14 @@ const RewardsManager = () => {
           </h3>
           <div className="space-y-6">
             {history.map((h, i) => (
-              <motion.div 
+              <motion.div
                 key={h.id}
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: i * 0.1 }}
                 className="relative pl-6 border-l border-gray-800"
               >
-                <div className="absolute left-[-5px] top-0 w-2.5 h-2.5 bg-primary rounded-full shadow-[0_0_10px_#FFD700]" />
+                <div className="absolute left-[-5px] top-0 w-2.5 h-2.5 bg-primary rounded-full shadow-[0_0_10px_#FF3131]" />
                 <p className="text-xs font-black uppercase tracking-tight text-white">{h.user} <span className="text-gray-500 font-bold">redeemed</span></p>
                 <p className="text-primary font-black text-sm">{h.item}</p>
                 <p className="text-[8px] text-gray-500 uppercase font-black tracking-widest mt-1">{h.date} • {h.cost} Pts</p>

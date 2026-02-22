@@ -7,6 +7,7 @@ import { useUser } from '../context/UserContext';
 import { AnimatePresence } from 'framer-motion';
 import SEO from '../components/SEO';
 import UpgradeModal from '../components/UpgradeModal';
+import Navbar from '../components/Navbar';
 
 const Home = () => {
   const [activeVideo, setActiveVideo] = useState(null);
@@ -29,16 +30,18 @@ const Home = () => {
 
   return (
     <div className="min-h-screen bg-black">
-      <SEO 
-        title="Home" 
-        description="Stream the world's best live events and exclusive content on TFC." 
+      <SEO
+        title="Home"
+        description="Stream the world's best live events and exclusive content on TFC."
       />
-      
+
+      <Navbar />
+
       {/* FULL SCREEN HERO WITH SCREENSHOT AND TFC ANIMATION */}
       <div className="relative w-full h-screen">
         {/* BACKGROUND LAYER - YOUR MMA SCREENSHOT */}
         <div className="absolute inset-0">
-          <img 
+          <img
             src="/Screenshot 2026-01-30 231135.png"
             alt="MMA Platform"
             className="w-full h-full object-cover"
@@ -60,22 +63,10 @@ const Home = () => {
         </div>
       </div>
 
-      {/* MAIN CONTENT AREA */}
-      <div className="py-12 space-y-12">
-        {categories.map((cat) => (
-          <ContentCarousel 
-            key={cat.id} 
-            category={cat.title} 
-            items={cat.items}
-            onPlay={handlePlay}
-          />
-        ))}
-      </div>
-
       {/* MODALS */}
       <AnimatePresence>
         {activeVideo && (
-          <VideoPlayer 
+          <VideoPlayer
             url={activeVideo.videoUrl || 'https://www.youtube.com/watch?v=ScMzIvxBSi4'}
             title={activeVideo.title}
             onClose={() => setActiveVideo(null)}
@@ -83,9 +74,9 @@ const Home = () => {
         )}
       </AnimatePresence>
 
-      <UpgradeModal 
-        isOpen={showUpgradeModal} 
-        onClose={() => setShowUpgradeModal(false)} 
+      <UpgradeModal
+        isOpen={showUpgradeModal}
+        onClose={() => setShowUpgradeModal(false)}
       />
     </div>
   );

@@ -7,11 +7,11 @@ import LogoutModal from './LogoutModal';
 
 
 const SidebarItem = ({ icon: Icon, label, active = false, onClick }) => (
-  <button 
+  <button
     onClick={onClick}
     className={`flex items-center w-full p-4 space-x-4 transition-all duration-300 hover:bg-surface-light group relative ${active ? 'text-primary' : 'text-gray-400'}`}
   >
-    {active && <div className="absolute left-0 top-0 h-full w-1 bg-primary shadow-[0_0_10px_#FFD700]" />}
+    {active && <div className="absolute left-0 top-0 h-full w-1 bg-primary shadow-[0_0_10px_#FF3131]" />}
     <Icon className={`w-6 h-6 transition-transform group-hover:scale-110 ${active ? 'text-primary' : ''}`} />
     <span className="hidden lg:block font-bold uppercase text-xs tracking-widest group-hover:text-white">{label}</span>
   </button>
@@ -42,7 +42,7 @@ const Sidebar = () => {
         <h1 className="text-4xl font-black text-primary tracking-tighter hidden lg:block italic transition-transform group-hover:scale-105">TFC</h1>
         <h1 className="text-2xl font-black text-primary lg:hidden italic transition-transform group-hover:scale-110">T</h1>
       </div>
-      
+
       <div className="px-6 py-4 hidden lg:block">
         <div className="bg-white/5 backdrop-blur-md p-4 rounded-3xl border border-white/10 shadow-xl shadow-black/20">
           <p className="text-[10px] text-gray-500 uppercase font-black tracking-widest mb-1">Status</p>
@@ -53,10 +53,10 @@ const Sidebar = () => {
             {user.type === 'Premium' && <Crown className="w-3 h-3 text-primary animate-pulse fill-primary" />}
           </div>
           <div className="mt-2 h-1.5 w-full bg-gray-800 rounded-full overflow-hidden border border-white/5">
-            <motion.div 
+            <motion.div
               initial={{ width: 0 }}
               animate={{ width: user.type === 'Premium' ? '100%' : '20%' }}
-              className="h-full bg-gradient-to-r from-primary to-yellow-600" 
+              className="h-full bg-gradient-to-r from-primary to-red-800"
             />
           </div>
         </div>
@@ -64,30 +64,30 @@ const Sidebar = () => {
 
       <nav className="mt-4 flex-1 overflow-y-auto no-scrollbar space-y-1">
         {menuItems.map((item) => (
-          <SidebarItem 
+          <SidebarItem
             key={item.label}
-            icon={item.icon} 
-            label={item.label} 
-            active={location.pathname === item.path} 
-            onClick={() => navigate(item.path)} 
+            icon={item.icon}
+            label={item.label}
+            active={location.pathname === item.path}
+            onClick={() => navigate(item.path)}
           />
         ))}
         {user.role === 'admin' && (
-          <SidebarItem 
-            icon={LayoutDashboard} 
-            label="TFC Console" 
-            active={location.pathname === '/admin'} 
-            onClick={() => navigate('/admin')} 
+          <SidebarItem
+            icon={LayoutDashboard}
+            label="TFC Console"
+            active={location.pathname === '/admin'}
+            onClick={() => navigate('/admin')}
           />
         )}
       </nav>
 
 
       <div className="p-4 border-t border-gray-800/50">
-        <SidebarItem 
-          icon={LogOut} 
-          label="Log Out" 
-          onClick={() => setIsLogoutModalOpen(true)} 
+        <SidebarItem
+          icon={LogOut}
+          label="Log Out"
+          onClick={() => setIsLogoutModalOpen(true)}
         />
       </div>
     </aside>

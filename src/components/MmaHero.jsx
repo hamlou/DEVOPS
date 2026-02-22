@@ -9,35 +9,35 @@ import { motion, AnimatePresence } from 'framer-motion';
 const MmaParticleSystem = ({ count = 8000 }) => {
   const pointsRef = useRef();
   const { mouse, viewport } = useThree();
-  
+
   // Create particles for "TFC" text with MMA aesthetic
   const particles = useMemo(() => {
     try {
       const canvas = typeof document !== 'undefined' ? document.createElement('canvas') : null;
       if (!canvas) return new Float32Array(count * 3);
-      
+
       const ctx = canvas.getContext('2d');
       if (!ctx) return new Float32Array(count * 3);
-      
+
       canvas.width = 1200;
       canvas.height = 500;
-      
+
       // Clear
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      
+
       // Draw "TFC" with bold font
       ctx.fillStyle = 'white';
       ctx.font = '900 380px sans-serif';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
       ctx.fillText('TFC', canvas.width / 2, canvas.height / 2);
-      
+
       const sampledPositions = [];
-      
+
       for (let i = 0; i < count; i++) {
         sampledPositions.push((Math.random() - 0.5) * 25, (Math.random() - 0.5) * 25, (Math.random() - 0.5) * 8);
       }
-      
+
       return new Float32Array(sampledPositions);
     } catch (e) {
       return new Float32Array(count * 3);
@@ -49,10 +49,10 @@ const MmaParticleSystem = ({ count = 8000 }) => {
     try {
       const canvas = typeof document !== 'undefined' ? document.createElement('canvas') : null;
       if (!canvas) return new Float32Array(count * 3);
-      
+
       const ctx = canvas.getContext('2d');
       if (!ctx) return new Float32Array(count * 3);
-      
+
       canvas.width = 1200;
       canvas.height = 500;
       ctx.fillStyle = 'white';
@@ -60,10 +60,10 @@ const MmaParticleSystem = ({ count = 8000 }) => {
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
       ctx.fillText('TFC', canvas.width / 2, canvas.height / 2);
-      
+
       const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
       const targets = new Float32Array(count * 3);
-      
+
       for (let i = 0; i < count; i++) {
         let x, y, found = false, attempts = 0;
         while (!found && attempts < 100) {
@@ -87,76 +87,76 @@ const MmaParticleSystem = ({ count = 8000 }) => {
 
   useFrame((state) => {
     if (!pointsRef.current || !pointsRef.current.geometry.attributes.position) return;
-    
+
     const positions = pointsRef.current.geometry.attributes.position.array;
     const mx = (mouse.x * viewport.width) / 2;
     const my = (mouse.y * viewport.height) / 2;
     const time = state.clock.getElapsedTime();
-    
+
     for (let i = 0; i < count; i++) {
       const i3 = i * 3;
-      
+
       // Current positions
       let px = positions[i3];
       let py = positions[i3 + 1];
       let pz = positions[i3 + 2];
-      
+
       // Target (TFC shape)
       const tx = targetPositions[i3];
       const ty = targetPositions[i3 + 1];
       const tz = targetPositions[i3 + 2];
-      
+
       // 1. Mouse Interaction (Repulsion)
       const dx = px - mx;
       const dy = py - my;
       const dist = Math.sqrt(dx * dx + dy * dy);
-      
+
       if (dist < 3.0) {
         const force = (3.0 - dist) / 3.0;
         velocities[i3] += dx * force * 0.2;
         velocities[i3 + 1] += dy * force * 0.2;
       }
-      
+
       // 2. Idle Motion (Aggressive drift)
       velocities[i3] += Math.sin(time * 0.7 + i * 0.1) * 0.003;
       velocities[i3 + 1] += Math.cos(time * 0.6 + i * 0.1) * 0.003;
-      
+
       // 3. Return Force (Strong magnetic convergence)
       const convergenceStrength = time < 2.5 ? 0.12 : 0.06;
       velocities[i3] += (tx - px) * convergenceStrength;
       velocities[i3 + 1] += (ty - py) * convergenceStrength;
       velocities[i3 + 2] += (tz - pz) * convergenceStrength;
-      
+
       // 4. Damping (Smooth but aggressive)
       velocities[i3] *= 0.85;
       velocities[i3 + 1] *= 0.85;
       velocities[i3 + 2] *= 0.85;
-      
+
       // Apply updates
       positions[i3] += velocities[i3];
       positions[i3 + 1] += velocities[i3 + 1];
       positions[i3 + 2] += velocities[i3 + 2];
     }
-    
+
     pointsRef.current.geometry.attributes.position.needsUpdate = true;
   });
 
   return (
     <points ref={pointsRef}>
       <bufferGeometry>
-        <bufferAttribute 
-          attach="attributes-position" 
-          count={count} 
-          array={particles} 
-          itemSize={3} 
+        <bufferAttribute
+          attach="attributes-position"
+          count={count}
+          array={particles}
+          itemSize={3}
         />
       </bufferGeometry>
-      <pointsMaterial 
-        size={0.045} 
-        color="#FFD700" 
-        transparent 
-        opacity={0.85} 
-        sizeAttenuation 
+      <pointsMaterial
+        size={0.045}
+        color="#FFFFFF"
+        transparent
+        opacity={0.85}
+        sizeAttenuation
         blending={THREE.AdditiveBlending}
         depthWrite={false}
       />
@@ -188,14 +188,14 @@ const MmaHero = () => {
   };
 
   return (
-    <div className="relative w-full h-screen bg-black overflow-hidden">
+    <div className="relative w-full min-h-screen bg-black overflow-y-auto">
       {/* Background Image */}
       <div className="absolute inset-0 z-0">
-        <img 
-          src="/Screenshot 2026-01-30 231135.png" 
+        <img
+          src="/Screenshot 2026-01-30 231135.png"
           alt="MMA Platform"
           className="w-full h-full object-cover"
-          style={{ 
+          style={{
             opacity: imageLoaded ? 1 : 0,
             transition: 'opacity 0.5s ease-in-out'
           }}
@@ -217,8 +217,7 @@ const MmaHero = () => {
       {/* Simple Overlay Text */}
       <div className="relative z-10 flex items-center justify-center h-full">
         <div className="text-center">
-          <h1 className="text-white text-6xl font-bold mb-4">TFC</h1>
-          <p className="text-gray-300 text-xl">MMA Platform</p>
+          <h1 className="text-white text-8xl font-black italic tracking-tighter drop-shadow-2xl">TFC</h1>
         </div>
       </div>
     </div>

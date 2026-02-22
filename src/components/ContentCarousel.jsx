@@ -8,7 +8,7 @@ const ContentCarousel = ({ category, items, onPlay }) => {
     <section className="pl-8 md:pl-16">
       <div className="flex items-center justify-between pr-8 mb-8">
         <div className="flex items-center space-x-4">
-          <div className="w-1 h-8 bg-primary shadow-[0_0_15px_#FFD700]" />
+          <div className="w-1 h-8 bg-primary shadow-[0_0_15px_#FF3131]" />
           <h2 className="text-2xl md:text-3xl font-black text-white uppercase tracking-tighter">
             {category}
           </h2>
@@ -20,8 +20,8 @@ const ContentCarousel = ({ category, items, onPlay }) => {
 
       <div className="flex space-x-6 overflow-x-auto pb-10 no-scrollbar pr-16 mask-fade-right">
         {items.map((item, i) => (
-          <ContentCard 
-            key={item.id} 
+          <ContentCard
+            key={item.id}
             item={item}
             onPlay={onPlay}
           />

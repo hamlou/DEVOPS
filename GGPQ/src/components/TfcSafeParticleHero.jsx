@@ -23,12 +23,12 @@ const TfcSafeParticleHero = () => {
 
     let animationFrameId;
     let particles = null;
-    
+
     // Performance optimized interaction constants
     const interactRadius = 140;
     const interactRadiusSq = interactRadius * interactRadius;
     const returnSpeed = 0.08; // Adjusted for smoother fly-in
-    
+
     // Grid-based spatial partitioning
     let grid = null;
     const gridSize = 60;
@@ -45,7 +45,7 @@ const TfcSafeParticleHero = () => {
         const offCtx = offCanvas.getContext('2d');
         offCanvas.width = w;
         offCanvas.height = h;
-        
+
         const fontSize = Math.min(w * 0.5, h * 0.6, 650);
         offCtx.fillStyle = 'white';
         offCtx.font = `900 ${fontSize}px "Inter", "system-ui", sans-serif`;
@@ -68,8 +68,8 @@ const TfcSafeParticleHero = () => {
         }
 
         const targetCount = 1200; // Capped as requested
-        let finalPoints = points.length > targetCount ? 
-          Array.from({length: targetCount}, (_, i) => points[Math.floor(i * (points.length / targetCount))]) : 
+        let finalPoints = points.length > targetCount ?
+          Array.from({ length: targetCount }, (_, i) => points[Math.floor(i * (points.length / targetCount))]) :
           points;
 
         const count = finalPoints.length;
@@ -91,16 +91,16 @@ const TfcSafeParticleHero = () => {
           const p = finalPoints[i];
           particles.homeX[i] = p.x;
           particles.homeY[i] = p.y;
-          
+
           // INITIAL ANIMATION: Particles start scattered anywhere off-screen or random
           const angle = Math.random() * Math.PI * 2;
           const dist = Math.max(w, h) * (1 + Math.random());
           particles.x[i] = w / 2 + Math.cos(angle) * dist;
           particles.y[i] = h / 2 + Math.sin(angle) * dist;
-          
+
           particles.size[i] = 1.0 + Math.random() * 2.0;
           particles.opacity[i] = 0.4 + Math.random() * 0.6;
-          
+
           const gx = Math.floor(p.x / gridSize);
           const gy = Math.floor(p.y / gridSize);
           const gIdx = gy * cols + gx;
@@ -132,10 +132,10 @@ const TfcSafeParticleHero = () => {
 
       const mx = mousePos.x;
       const my = mousePos.y;
-      
+
       const cols = Math.ceil(canvas.width / gridSize);
       const rows = Math.ceil(canvas.height / gridSize);
-      
+
       const count = particles.count;
       const time = Date.now() * 0.002; // Time variable for continuous motion
 
@@ -163,11 +163,11 @@ const TfcSafeParticleHero = () => {
               if (distSq < interactRadiusSq) {
                 const dist = Math.sqrt(distSq);
                 const ratio = (interactRadius - dist) / interactRadius;
-                
+
                 // Add subtle continuous orbital/noise motion while hovering
                 const offsetX = Math.sin(time + i) * 15 * ratio;
                 const offsetY = Math.cos(time + i) * 15 * ratio;
-                
+
                 // Apply repulsion + continuous motion
                 // The particles can now move "outside" the letter shape due to offset
                 targetsX[i] = particles.homeX[i] - (dx * ratio * 0.8) + offsetX;
@@ -182,19 +182,19 @@ const TfcSafeParticleHero = () => {
         // Smooth snap toward target (home or repelled)
         const dx = targetsX[i] - particles.x[i];
         const dy = targetsY[i] - particles.y[i];
-        
+
         particles.x[i] += dx * returnSpeed;
         particles.y[i] += dy * returnSpeed;
 
         const op = particles.opacity[i];
         ctx.globalAlpha = op;
         ctx.fillStyle = '#FFFFFF';
-        
+
         ctx.beginPath();
         ctx.arc(particles.x[i], particles.y[i], particles.size[i], 0, 6.28);
         ctx.fill();
       }
-      
+
       ctx.globalAlpha = 1;
       animationFrameId = requestAnimationFrame(animate);
     };
@@ -225,37 +225,37 @@ const TfcSafeParticleHero = () => {
   if (isError) {
     return (
       <div className="w-full h-screen bg-[#0a0a0a] flex flex-col items-center justify-center">
-        <h1 className="text-8xl font-black text-primary italic tracking-tighter">TFC</h1>
+        <h1 className="text-8xl font-black text-white italic tracking-tighter">TFC</h1>
         <p className="text-gray-500 font-bold uppercase tracking-[0.4em] mt-4">The Future of Content</p>
       </div>
     );
   }
 
   return (
-    <div ref={containerRef} className="relative w-full h-screen bg-[#0a0a0a] overflow-hidden">
-      <canvas 
-        ref={canvasRef} 
+    <div ref={containerRef} className="relative w-full min-h-screen bg-[#0a0a0a] overflow-y-auto">
+      <canvas
+        ref={canvasRef}
         className="w-full h-full block cursor-pointer"
-        style={{ 
+        style={{
           zIndex: 1000,
           background: 'transparent'
         }}
       />
-      
+
       {/* Overlay UI */}
       <div className="absolute inset-0 z-10 pointer-events-none flex flex-col items-center justify-center">
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.5 }}
           className="mt-[25vh] text-center"
         >
           <div className="h-px w-32 bg-gradient-to-r from-transparent via-primary to-transparent mx-auto mb-8" />
-          
+
           <p className="text-white font-black text-sm uppercase tracking-[0.8em] mb-4 drop-shadow-2xl">
             The Future of Content
           </p>
-          
+
           <p className="text-gray-500 font-bold text-[10px] uppercase tracking-[0.4em] opacity-40 mb-12">
             Interactive Neural Infrastructure // Protocol 01
           </p>
@@ -273,9 +273,9 @@ const TfcSafeParticleHero = () => {
 
       {/* Cinematic Vignette */}
       <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_center,transparent_0%,rgba(0,0,0,0.8)_100%)]" />
-      
+
       {/* Scroll Indicator */}
-      <motion.div 
+      <motion.div
         animate={{ y: [0, 10, 0] }}
         transition={{ repeat: Infinity, duration: 2 }}
         className="absolute bottom-10 left-1/2 -translate-x-1/2 z-20 pointer-events-none"

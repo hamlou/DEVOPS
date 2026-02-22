@@ -7,7 +7,7 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: "#FFD700", // Gold
+        primary: "#E01818", // Premium Red
         background: "#000000",
         surface: "#121212",
         "surface-light": "#1E1E1E",

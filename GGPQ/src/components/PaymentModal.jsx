@@ -4,7 +4,7 @@ import { CreditCard, ShieldCheck, X, Loader2, CheckCircle2 } from 'lucide-react'
 
 const PaymentModal = ({ isOpen, onClose, plan, onPixelatedSuccess }) => {
   const [step, setStep] = useState('form'); // form, processing, success
-  
+
   if (!isOpen) return null;
 
   const handlePay = () => {
@@ -22,7 +22,7 @@ const PaymentModal = ({ isOpen, onClose, plan, onPixelatedSuccess }) => {
   return (
     <AnimatePresence>
       <div className="fixed inset-0 z-[600] flex items-center justify-center p-4 bg-black/90 backdrop-blur-2xl">
-        <motion.div 
+        <motion.div
           initial={{ scale: 0.9, opacity: 0, y: 20 }}
           animate={{ scale: 1, opacity: 1, y: 0 }}
           exit={{ scale: 0.9, opacity: 0, y: 20 }}
@@ -31,7 +31,7 @@ const PaymentModal = ({ isOpen, onClose, plan, onPixelatedSuccess }) => {
           {step === 'form' && (
             <>
               <button onClick={onClose} className="absolute top-8 right-8 text-gray-500 hover:text-white transition-colors"><X /></button>
-              
+
               <div className="flex items-center space-x-4 mb-8">
                 <div className="p-3 bg-primary/10 rounded-2xl">
                   <CreditCard className="w-6 h-6 text-primary" />
@@ -67,13 +67,13 @@ const PaymentModal = ({ isOpen, onClose, plan, onPixelatedSuccess }) => {
                 </div>
               </div>
 
-              <button 
+              <button
                 onClick={handlePay}
-                className="w-full bg-primary hover:bg-yellow-500 text-black font-black py-5 rounded-2xl uppercase tracking-[0.2em] transition-all transform hover:scale-[1.02] shadow-xl shadow-primary/20"
+                className="w-full bg-primary hover:bg-red-600 text-black font-black py-5 rounded-2xl uppercase tracking-[0.2em] transition-all transform hover:scale-[1.02] shadow-xl shadow-primary/20"
               >
                 Pay & Unlock Now
               </button>
-              
+
               <div className="mt-6 flex items-center justify-center space-x-2 text-gray-500">
                 <ShieldCheck className="w-4 h-4" />
                 <span className="text-[10px] font-black uppercase tracking-widest">End-to-End Encrypted</span>
@@ -93,7 +93,7 @@ const PaymentModal = ({ isOpen, onClose, plan, onPixelatedSuccess }) => {
 
           {step === 'success' && (
             <div className="py-20 flex flex-col items-center text-center space-y-6">
-              <motion.div 
+              <motion.div
                 initial={{ scale: 0.5, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 className="w-20 h-20 bg-green-500/10 rounded-full flex items-center justify-center"

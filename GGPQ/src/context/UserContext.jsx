@@ -67,7 +67,7 @@ export const UserProvider = ({ children }) => {
 
       if (response.ok) {
         console.log('✅ User registered successfully in backend:', data);
-        
+
         // Show success notification
         if (data.email_sent) {
           setNotification({ type: 'success', message: '🎉 Welcome! Check your email for a welcome message.' });
@@ -165,24 +165,23 @@ export const UserProvider = ({ children }) => {
       setNotification
     }}>
       {children}
-      
+
       {/* Toast Notification */}
       {notification && (
         <div className="fixed top-4 right-4 z-50 animate-slideIn">
           <div className={`
             px-6 py-4 rounded-xl shadow-2xl backdrop-blur-lg border
-            ${
-              notification.type === 'success' ? 'bg-green-500/90 border-green-400 text-white' :
+            ${notification.type === 'success' ? 'bg-green-500/90 border-green-400 text-white' :
               notification.type === 'error' ? 'bg-red-500/90 border-red-400 text-white' :
-              notification.type === 'warning' ? 'bg-yellow-500/90 border-yellow-400 text-white' :
-              'bg-blue-500/90 border-blue-400 text-white'
+                notification.type === 'warning' ? 'bg-red-600/90 border-red-500 text-white' :
+                  'bg-blue-500/90 border-blue-400 text-white'
             }
             max-w-md flex items-center gap-3
           `}>
             <span className="text-lg">
               {notification.type === 'success' ? '✅' :
-               notification.type === 'error' ? '❌' :
-               notification.type === 'warning' ? '⚠️' : 'ℹ️'}
+                notification.type === 'error' ? '❌' :
+                  notification.type === 'warning' ? '⚠️' : 'ℹ️'}
             </span>
             <p className="font-semibold">{notification.message}</p>
           </div>

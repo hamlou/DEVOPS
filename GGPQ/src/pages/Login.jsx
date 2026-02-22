@@ -25,7 +25,7 @@ const Login = () => {
     }
   };
   return (
-    <div className="min-h-screen bg-black flex items-center justify-center p-6 relative overflow-hidden">
+    <div className="min-h-screen bg-black flex items-center justify-center p-6 relative overflow-y-auto">
       <SEO
         title="Login"
         description="Login to your TFC account to access exclusive live events and premium content."
@@ -33,7 +33,7 @@ const Login = () => {
       {/* Animated Background Gradients */}
       <div className="absolute top-0 left-0 w-full h-full">
         <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-primary/10 rounded-full blur-[120px] animate-pulse" />
-        <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-yellow-600/5 rounded-full blur-[120px] animate-pulse" />
+        <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-red-600/5 rounded-full blur-[120px] animate-pulse" />
       </div>
 
       <motion.div
@@ -95,7 +95,7 @@ const Login = () => {
 
           <button
             type="submit"
-            className="w-full bg-primary hover:bg-yellow-500 text-black font-black py-5 rounded-2xl uppercase tracking-[0.2em] flex items-center justify-center group transition-all"
+            className="w-full bg-primary hover:bg-red-600 text-black font-black py-5 rounded-2xl uppercase tracking-[0.2em] flex items-center justify-center group transition-all"
           >
             <span>Sign In</span>
             <ChevronRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />

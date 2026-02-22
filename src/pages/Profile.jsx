@@ -30,14 +30,14 @@ const Profile = () => {
 
   return (
     <div className="p-8 md:p-16 max-w-6xl mx-auto min-h-screen">
-      <SEO 
-        title="My Profile" 
-        description="Manage your TFC account, subscription, and preferences." 
+      <SEO
+        title="My Profile"
+        description="Manage your TFC account, subscription, and preferences."
       />
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
         {/* Profile Card */}
         <div className="lg:col-span-1">
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             className="bg-surface rounded-3xl p-8 border border-gray-800 text-center sticky top-8"
@@ -54,19 +54,19 @@ const Profile = () => {
                 </div>
               )}
             </div>
-            
+
             {isEditing ? (
               <div className="space-y-4 mb-6">
-                <input 
-                  type="text" 
-                  value={tempName} 
+                <input
+                  type="text"
+                  value={tempName}
                   onChange={(e) => setTempName(e.target.value)}
                   className="w-full bg-background border border-gray-700 rounded-xl px-4 py-2 text-center font-bold focus:border-primary focus:outline-none"
                   placeholder="Enter Name"
                 />
-                <input 
-                  type="text" 
-                  value={tempSeed} 
+                <input
+                  type="text"
+                  value={tempSeed}
                   onChange={(e) => setTempSeed(e.target.value)}
                   className="w-full bg-background border border-gray-700 rounded-xl px-4 py-2 text-center text-xs focus:border-primary focus:outline-none"
                   placeholder="Avatar Seed"
@@ -78,7 +78,7 @@ const Profile = () => {
                 <p className="text-gray-500 text-sm mb-6">{user.email}</p>
               </>
             )}
-            
+
             <div className="flex justify-center space-x-4 mb-8">
               <div className="text-center">
                 <p className="text-xl font-black text-primary">{user.points}</p>
@@ -91,7 +91,7 @@ const Profile = () => {
               </div>
             </div>
 
-            <button 
+            <button
               onClick={() => isEditing ? handleSave() : setIsEditing(true)}
               className="w-full bg-surface-light border border-gray-700 text-white font-bold py-3 rounded-xl uppercase text-xs tracking-widest hover:border-primary transition-all"
             >
@@ -104,7 +104,7 @@ const Profile = () => {
         {/* Content */}
         <div className="lg:col-span-2 space-y-12">
           {/* Status Banner */}
-          <div className="bg-gradient-to-r from-primary to-yellow-600 rounded-3xl p-8 text-black flex items-center justify-between shadow-xl shadow-primary/10">
+          <div className="bg-gradient-to-r from-primary to-red-800 rounded-3xl p-8 text-black flex items-center justify-between shadow-xl shadow-primary/10">
             <div>
               <p className="text-xs font-black uppercase tracking-widest opacity-70 mb-1">Current Membership</p>
               <h3 className="text-3xl font-black uppercase tracking-tighter">TFC {user.type} PRO</h3>
@@ -119,7 +119,7 @@ const Profile = () => {
           <div className="space-y-4">
             <h4 className="text-sm font-black uppercase tracking-widest text-gray-500 mb-6 px-2">Account Details</h4>
             {sections.map((item, i) => (
-              <motion.div 
+              <motion.div
                 key={i}
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
