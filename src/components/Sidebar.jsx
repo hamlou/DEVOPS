@@ -6,14 +6,17 @@ import { motion } from 'framer-motion';
 import LogoutModal from './LogoutModal';
 
 
-const SidebarItem = ({ icon: Icon, label, active = false, onClick }) => (
+const SidebarItem = ({ icon: Icon, label, active = false, onClick, isSubscription = false }) => (
   <button
     onClick={onClick}
-    className={`flex items-center w-full p-4 space-x-4 transition-all duration-300 hover:bg-surface-light group relative ${active ? 'text-primary' : 'text-gray-400'}`}
+    className={`flex items-center w-full p-4 space-x-4 transition-all duration-300 hover:bg-surface-light group relative ${isSubscription ? 'bg-yellow-500 text-white' : active ? 'text-primary' : 'text-gray-400'}`}
   >
     {active && <div className="absolute left-0 top-0 h-full w-1 bg-primary shadow-[0_0_10px_#FF3131]" />}
-    <Icon className={`w-6 h-6 transition-transform group-hover:scale-110 ${active ? 'text-primary' : ''}`} />
-    <span className="hidden lg:block font-bold uppercase text-xs tracking-widest group-hover:text-white">{label}</span>
+    {isSubscription && <div className="absolute left-0 top-0 h-full w-1 bg-yellow-600" />}
+    <div className="relative">
+      <Icon className={`w-6 h-6 transition-transform group-hover:scale-110 ${isSubscription ? 'text-white' : active ? 'text-primary' : ''}`} />
+    </div>
+    <span className={`hidden lg:block font-bold uppercase text-xs tracking-widest ${isSubscription ? 'text-white' : 'group-hover:text-white'}`}>{label}</span>
   </button>
 );
 
@@ -27,9 +30,9 @@ const Sidebar = () => {
     { icon: LayoutGrid, label: 'Browse', path: '/browse' },
     { icon: User, label: 'Profile', path: '/profile' },
     { icon: History, label: 'History', path: '/history' },
+    { icon: CreditCard, label: 'Subscription', path: '/subscription' },
     { icon: List, label: 'My List', path: '/mylist' },
     { icon: Trophy, label: 'Rewards', path: '/rewards' },
-    { icon: CreditCard, label: 'Subscription', path: '/subscription' },
     { icon: Settings, label: 'Settings', path: '/settings' },
   ];
 
@@ -69,6 +72,7 @@ const Sidebar = () => {
             icon={item.icon}
             label={item.label}
             active={location.pathname === item.path}
+            isSubscription={item.label === 'Subscription'}
             onClick={() => navigate(item.path)}
           />
         ))}

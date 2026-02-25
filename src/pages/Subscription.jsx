@@ -73,6 +73,17 @@ const Subscription = () => {
                 Current Plan
               </div>
             )}
+            {/* Monthly/Yearly Badge */}
+            {plan.name.includes('Pro') && (
+              <div className="absolute -top-4 right-4 bg-red-500 text-white px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest">
+                Monthly
+              </div>
+            )}
+            {plan.name.includes('Premium') && (
+              <div className="absolute -top-4 right-4 bg-red-500 text-white px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest">
+                Yearly
+              </div>
+            )}
 
             <div className="mb-8">
               <h3 className="text-2xl font-black uppercase mb-2 tracking-tight">{plan.name}</h3>

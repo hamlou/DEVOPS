@@ -27,7 +27,7 @@ const TfcSafeParticleHero = () => {
     // Performance optimized interaction constants
     const interactRadius = 140;
     const interactRadiusSq = interactRadius * interactRadius;
-    const returnSpeed = 0.08; // Adjusted for smoother fly-in
+    const returnSpeed = 0.15; // Faster return speed for more dynamic movement
 
     // Grid-based spatial partitioning
     let grid = null;
@@ -67,7 +67,7 @@ const TfcSafeParticleHero = () => {
           }
         }
 
-        const targetCount = 1200; // Capped as requested
+        const targetCount = 800; // Reduced density for cleaner appearance
         let finalPoints = points.length > targetCount ?
           Array.from({ length: targetCount }, (_, i) => points[Math.floor(i * (points.length / targetCount))]) :
           points;
@@ -98,7 +98,7 @@ const TfcSafeParticleHero = () => {
           particles.x[i] = w / 2 + Math.cos(angle) * dist;
           particles.y[i] = h / 2 + Math.sin(angle) * dist;
 
-          particles.size[i] = 1.0 + Math.random() * 2.0;
+          particles.size[i] = 1.2 + Math.random() * 1.8;
           particles.opacity[i] = 0.4 + Math.random() * 0.6;
 
           const gx = Math.floor(p.x / gridSize);
@@ -138,6 +138,7 @@ const TfcSafeParticleHero = () => {
 
       const count = particles.count;
       const time = Date.now() * 0.002; // Time variable for continuous motion
+      const randomOffset = Math.sin(Date.now() * 0.0005) * 0.3; // Random movement factor
 
       // Reset all to follow home position by default
       const targetsX = new Float32Array(particles.homeX);
@@ -186,12 +187,21 @@ const TfcSafeParticleHero = () => {
         particles.x[i] += dx * returnSpeed;
         particles.y[i] += dy * returnSpeed;
 
+        // Add continuous random movement even when mouse is not hovering (faster)
+        const randomX = Math.sin(time * 1.2 + i * 0.15) * 3.5 * randomOffset;
+        const randomY = Math.cos(time * 0.9 + i * 0.2) * 3.5 * randomOffset;
+        
+        const finalX = particles.x[i] + randomX;
+        const finalY = particles.y[i] + randomY;
+
         const op = particles.opacity[i];
         ctx.globalAlpha = op;
-        ctx.fillStyle = '#E01818';
+        ctx.fillStyle = '#808080';
 
+        // Make particles slightly larger
+        const largerSize = particles.size[i] * 1.3;
         ctx.beginPath();
-        ctx.arc(particles.x[i], particles.y[i], particles.size[i], 0, 6.28);
+        ctx.arc(finalX, finalY, largerSize, 0, 6.28);
         ctx.fill();
       }
 
@@ -224,14 +234,14 @@ const TfcSafeParticleHero = () => {
 
   if (isError) {
     return (
-      <div className="w-full h-screen bg-[#0a0a0a] flex flex-col items-center justify-center">
-        <h1 className="text-8xl font-black text-primary italic tracking-tighter drop-shadow-2xl">TFC</h1>
+      <div className="w-full h-full bg-[#0a0a0a] flex flex-col items-center justify-center">
+        <h1 className="text-6xl font-black text-gray-400 italic tracking-tighter drop-shadow-2xl">TFC</h1>
       </div>
     );
   }
 
   return (
-    <div ref={containerRef} className="relative w-full h-screen bg-[#0a0a0a] overflow-hidden">
+    <div ref={containerRef} className="relative w-full h-full bg-[#0a0a0a] overflow-hidden">
       <canvas
         ref={canvasRef}
         className="w-full h-full block cursor-pointer"

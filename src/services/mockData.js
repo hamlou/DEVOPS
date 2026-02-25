@@ -55,9 +55,9 @@ export const fetchAnalytics = () => Promise.resolve(mockAnalytics);
 
 
 export const mockSubscriptionPlans = [
-  { id: 'p1', name: 'Basic', price: '$0', features: ['Standard Definition', 'With Ads', 'Limited Content'] },
-  { id: 'p2', name: 'Elite Red', price: '$9.99/mo', features: ['4K Ultra HDR', 'Ad-Free', 'All Live Events', 'Priority Rewards'] },
-  { id: 'p3', name: 'Elite Annual', price: '$89.99/yr', features: ['All Pro Features', 'Save 25%', 'VIP Access', 'Exclusive Badges'] },
+  { id: 'p1', name: 'Basic', price: '$0', features: ['720p Quality', 'With Ads', 'Limited Content'] },
+  { id: 'p2', name: 'Elite Pro', price: '$4.99/mo', features: ['1080p & 4K Quality', 'Ad-Free', 'Unlock All Content', 'Priority Rewards', 'VIP Access', 'Exclusive Badges', '+100 Points'] },
+  { id: 'p3', name: 'Elite Premium', price: '$43.99/yr', features: ['1080p & 4K Quality', 'Ad-Free', 'Unlock All Content', 'Priority Rewards', 'VIP Access', 'Exclusive Badges', '+250 Points', 'Save more than 25%'] },
 ];
 
 export const simulatePayment = async (planId) => {

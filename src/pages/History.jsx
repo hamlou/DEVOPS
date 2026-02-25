@@ -94,6 +94,20 @@ const History = () => {
         )}
       </AnimatePresence>
 
+      <div className="mt-16 p-8 rounded-3xl border border-gray-700 bg-gradient-to-br from-red-500/10 to-red-700/10">
+        <div className="flex items-center justify-between">
+          <div>
+            <h3 className="text-2xl font-black text-red-400 mb-2">
+              Upgrade to Elite
+            </h3>
+            <p className="text-gray-400 max-w-md">Unlock premium content, 4K streaming, and ad-free experience with our Elite plans.</p>
+          </div>
+          <a href="/subscription" className="bg-gradient-to-r from-red-600 to-red-700 text-white px-6 py-3 rounded-2xl font-black uppercase tracking-widest text-sm hover:from-red-500 hover:to-red-600 transition-all">
+            Subscribe Now
+          </a>
+        </div>
+      </div>
+
       <UpgradeModal 
         isOpen={showUpgradeModal} 
         onClose={() => setShowUpgradeModal(false)} 

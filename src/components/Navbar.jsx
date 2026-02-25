@@ -6,12 +6,31 @@ const NavItem = ({ label }) => {
     // Each span gets a CSS variable --index for the delay calculation
     const letters = label.split('').map((char, index) => (
         <span key={index} style={{ '--index': index }}>
-            {char === ' ' ? '\u00A0' : char}
+            {char === ' ' ? ' ' : char}
         </span>
     ));
 
+    // Map labels to section IDs
+    const sectionMap = {
+        'Home': 'home',
+        'Top Fighters': 'top-fighters',
+        'Events': 'events',
+        'About': 'about',
+        'Contact': 'contact'
+    };
+
+    const sectionId = sectionMap[label] || label.toLowerCase().replace(/\s+/g, '-');
+
+    const handleClick = (e) => {
+        e.preventDefault();
+        const element = document.getElementById(sectionId);
+        if (element) {
+            element.scrollIntoView({ behavior: 'smooth' });
+        }
+    };
+
     return (
-        <a href={`#${label.toLowerCase().replace(/\s+/g, '-')}`} className="nav-item">
+        <a href={`#${sectionId}`} className="nav-item" onClick={handleClick}>
             <span className="nav-text-glitch" data-text={label}>
                 {letters}
             </span>
