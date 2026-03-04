@@ -1,11 +1,17 @@
 import { useState, useEffect } from "react";
 import { useUser } from '../context/UserContext';
 import SEO from '../components/SEO';
+import { signIn, signUp, signInWithGoogle } from '../firebase';
 import './Login.css';
 
 export default function Login() {
   const { login } = useUser();
   const [activeTab, setActiveTab] = useState('login'); // 'login' or 'signup'
+
+  // Firebase authentication state
+  const [isLoading, setIsLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
 
   /* ── Password strength logic (mirrors checkPw in tfc-auth.html) ── */
   const [signupPassword, setSignupPassword] = useState('');
@@ -26,18 +32,119 @@ export default function Login() {
   const eyeOpen = <><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" /><circle cx="12" cy="12" r="3" /></>;
   const eyeClosed = <><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94" /><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19" /><line x1="1" y1="1" x2="23" y2="23" /></>;
 
-  const handleLoginSubmit = (e) => {
+  const handleLoginSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
+    setErrorMessage('');
+    setSuccessMessage('');
+
     const email = document.getElementById('login-email')?.value;
     const password = document.getElementById('login-password')?.value;
-    login(email || 'demo@tfc.tv', password || 'password');
+
+    try {
+      const result = await signIn(email, password);
+      
+      if (result.success) {
+        // Login successful - update your app's user context
+        login(email, password);
+        setSuccessMessage('Welcome back!');
+      } else {
+        // Login failed - show error
+        setErrorMessage(result.error || 'Failed to sign in. Please check your credentials.');
+      }
+    } catch (error) {
+      setErrorMessage('An unexpected error occurred. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  const handleSignupSubmit = (e) => {
+  const handleSignupSubmit = async (e) => {
     e.preventDefault();
-    // For now, we can just trigger login to show it works
+    setIsLoading(true);
+    setErrorMessage('');
+    setSuccessMessage('');
+
     const email = document.getElementById('signup-email')?.value;
-    login(email || 'demo@tfc.tv', 'password');
+    const password = document.getElementById('signup-password')?.value;
+    const confirmPassword = document.getElementById('signup-confirm')?.value;
+
+    // Check if passwords match
+    if (password !== confirmPassword) {
+      setErrorMessage('Passwords do not match. Please try again.');
+      setIsLoading(false);
+      return;
+    }
+
+    // Password validation
+    const hasMinLength = password.length >= 8;
+    const hasUppercase = /[A-Z]/.test(password);
+    const hasNumber = /[0-9]/.test(password);
+    const hasSpecialChar = /[^A-Za-z0-9]/.test(password);
+
+    if (!hasMinLength) {
+      setErrorMessage('Password must be at least 8 characters long.');
+      setIsLoading(false);
+      return;
+    }
+
+    if (!hasUppercase) {
+      setErrorMessage('Password must contain at least one uppercase letter.');
+      setIsLoading(false);
+      return;
+    }
+
+    if (!hasNumber) {
+      setErrorMessage('Password must contain at least one number.');
+      setIsLoading(false);
+      return;
+    }
+
+    if (!hasSpecialChar) {
+      setErrorMessage('Password must contain at least one special character.');
+      setIsLoading(false);
+      return;
+    }
+
+    try {
+      const result = await signUp(email, password);
+      
+      if (result.success) {
+        // Signup successful - show success message and switch to login tab
+        setSuccessMessage('Account created successfully! You can now sign in.');
+        setActiveTab('login');
+      } else {
+        // Signup failed - show error
+        setErrorMessage(result.error || 'Failed to create account. Please try again.');
+      }
+    } catch (error) {
+      setErrorMessage('An unexpected error occurred. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleGoogleSignIn = async () => {
+    setIsLoading(true);
+    setErrorMessage('');
+    setSuccessMessage('');
+
+    try {
+      const result = await signInWithGoogle();
+      
+      if (result.success) {
+        // Google sign-in successful - update your app's user context
+        login(result.user.email, 'google-oauth');
+        setSuccessMessage(`Welcome, ${result.user.displayName || result.user.email}!`);
+      } else {
+        // Google sign-in failed - show error
+        setErrorMessage(result.error || 'Failed to sign in with Google.');
+      }
+    } catch (error) {
+      setErrorMessage('An unexpected error occurred. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -84,6 +191,18 @@ export default function Login() {
             id="form-login"
             onSubmit={handleLoginSubmit}
           >
+            {/* Error/Success Messages */}
+            {errorMessage && (
+              <div style={{ background: '#e01818', color: 'white', padding: '12px', borderRadius: '8px', marginBottom: '16px', textAlign: 'center' }}>
+                {errorMessage}
+              </div>
+            )}
+            {successMessage && (
+              <div style={{ background: '#55d080', color: 'white', padding: '12px', borderRadius: '8px', marginBottom: '16px', textAlign: 'center' }}>
+                {successMessage}
+              </div>
+            )}
+
             <div className="field">
               <div className="field-inner">
                 <div className="field-content">
@@ -125,10 +244,12 @@ export default function Login() {
               <a className="forgot" href="#">Forgot password?</a>
             </div>
 
-            <button type="submit" className="btn-primary">Sign In</button>
+            <button type="submit" className="btn-primary" disabled={isLoading}>
+              {isLoading ? 'Signing In...' : 'Sign In'}
+            </button>
             <div className="switch-text">First time here? <span onClick={() => setActiveTab('signup')}>Create account</span></div>
             <div className="divider"><span>or continue with</span></div>
-            <button type="button" className="btn-google" onClick={handleLoginSubmit}>
+            <button type="button" className="btn-google" onClick={handleGoogleSignIn}>
               <svg viewBox="0 0 48 48">
                 <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z" />
                 <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z" />
@@ -145,6 +266,18 @@ export default function Login() {
             id="form-signup"
             onSubmit={handleSignupSubmit}
           >
+            {/* Error/Success Messages */}
+            {errorMessage && (
+              <div style={{ background: '#e01818', color: 'white', padding: '12px', borderRadius: '8px', marginBottom: '16px', textAlign: 'center' }}>
+                {errorMessage}
+              </div>
+            )}
+            {successMessage && (
+              <div style={{ background: '#55d080', color: 'white', padding: '12px', borderRadius: '8px', marginBottom: '16px', textAlign: 'center' }}>
+                {successMessage}
+              </div>
+            )}
+
             <div className="field">
               <div className="field-inner">
                 <div className="field-content">
@@ -233,7 +366,9 @@ export default function Login() {
               </div>
             </div>
 
-            <button type="submit" className="btn-primary">Create Account</button>
+            <button type="submit" className="btn-primary" disabled={isLoading}>
+              {isLoading ? 'Creating Account...' : 'Create Account'}
+            </button>
             <div className="switch-text">Already a member? <span onClick={() => setActiveTab('login')}>Sign in</span></div>
           </form>
 
