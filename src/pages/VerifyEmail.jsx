@@ -19,9 +19,29 @@ export default function VerifyEmail() {
 
   useEffect(() => {
     console.log('VerifyEmail mounted, location.state:', location.state);
-    // Get email from navigation state
-    const email = location.state?.email;
+    
+    // Check for URL query parameters (when coming from email verification link)
+    const urlParams = new URLSearchParams(window.location.search);
+    const isVerifiedFromLink = urlParams.get('verified') === 'true';
+    
+    // Get email from navigation state OR Firebase current user
+    const email = location.state?.email || auth.currentUser?.email;
     console.log('Email from state:', email);
+    console.log('Verified from link:', isVerifiedFromLink);
+    
+    if (isVerifiedFromLink && email) {
+      // User clicked verification link and was redirected back
+      console.log('✅ Email verified via link!');
+      setIsVerified(true);
+      setSuccessMessage('Email verified successfully! Redirecting...');
+      
+      // Update user context and redirect to home
+      setTimeout(() => {
+        login(email, ''); // Login with email
+        navigate('/'); // Redirect to home page
+      }, 2000);
+      return;
+    }
     
     if (!email) {
       setErrorMessage('No email provided. Please sign up again.');
@@ -41,7 +61,7 @@ export default function VerifyEmail() {
         // Update user context and redirect
         setTimeout(() => {
           login(email, ''); // Login with email
-          navigate('/');
+          navigate('/'); // Redirect to home page
         }, 2000);
       }
     });
@@ -144,19 +164,96 @@ export default function VerifyEmail() {
                     background: 'rgba(224, 24, 24, 0.1)', 
                     border: '1px solid #e01818',
                     borderRadius: '8px', 
-                    padding: '16px',
+                    padding: '20px',
                     marginBottom: '16px'
                   }}>
-                    <p style={{ fontSize: '13px', color: '#ccc', margin: 0 }}>
-                      📧 <strong>Next steps:</strong>
-                    </p>
-                    <ol style={{ fontSize: '13px', color: '#ccc', margin: '8px 0 0 0', paddingLeft: '20px' }}>
-                      <li style={{ marginBottom: '4px' }}>Open your email inbox</li>
-                      <li style={{ marginBottom: '4px' }}>Find the email from TFC</li>
-                      <li>Click the verification link in the email</li>
-                    </ol>
-                    <p style={{ fontSize: '12px', color: '#999', marginTop: '12px', fontStyle: 'italic' }}>
-                      ⏳ You'll be automatically redirected after verification.
+                    <div style={{ textAlign: 'left', marginBottom: '12px' }}>
+                      <p style={{ fontSize: '14px', color: '#fff', fontWeight: '600', marginBottom: '12px' }}>
+                        📧 <strong>Next Steps:</strong>
+                      </p>
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                          <span style={{ 
+                            display: 'inline-flex', 
+                            alignItems: 'center', 
+                            justifyContent: 'center',
+                            width: '24px', 
+                            height: '24px',
+                            background: '#e01818',
+                            color: '#fff',
+                            borderRadius: '50%',
+                            fontSize: '12px',
+                            fontWeight: '700'
+                          }}>1</span>
+                          <span style={{ fontSize: '13px', color: '#ddd' }}>Open your email inbox</span>
+                        </div>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                          <span style={{ 
+                            display: 'inline-flex', 
+                            alignItems: 'center', 
+                            justifyContent: 'center',
+                            width: '24px', 
+                            height: '24px',
+                            background: '#e01818',
+                            color: '#fff',
+                            borderRadius: '50%',
+                            fontSize: '12px',
+                            fontWeight: '700'
+                          }}>2</span>
+                          <span style={{ fontSize: '13px', color: '#ddd' }}>Find the email from TFC</span>
+                        </div>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                          <span style={{ 
+                            display: 'inline-flex', 
+                            alignItems: 'center', 
+                            justifyContent: 'center',
+                            width: '24px', 
+                            height: '24px',
+                            background: '#e01818',
+                            color: '#fff',
+                            borderRadius: '50%',
+                            fontSize: '12px',
+                            fontWeight: '700'
+                          }}>3</span>
+                          <span style={{ fontSize: '13px', color: '#ddd' }}>Click the verification link</span>
+                        </div>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                          <span style={{ 
+                            display: 'inline-flex', 
+                            alignItems: 'center', 
+                            justifyContent: 'center',
+                            width: '24px', 
+                            height: '24px',
+                            background: '#e01818',
+                            color: '#fff',
+                            borderRadius: '50%',
+                            fontSize: '12px',
+                            fontWeight: '700'
+                          }}>4</span>
+                          <span style={{ fontSize: '13px', color: '#ddd' }}>Return to this page and sign in</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div style={{ 
+                      borderTop: '1px solid rgba(224, 24, 24, 0.3)',
+                      paddingTop: '12px',
+                      marginTop: '12px'
+                    }}>
+                      <p style={{ fontSize: '12px', color: '#e01818', fontStyle: 'italic', margin: 0 }}>
+                        ⏳ After verifying, return here and sign in with your credentials
+                      </p>
+                    </div>
+                  </div>
+                  
+                  <div style={{
+                    background: 'rgba(255, 165, 0, 0.1)',
+                    border: '1px solid #ffa500',
+                    borderRadius: '8px',
+                    padding: '12px',
+                    marginBottom: '16px'
+                  }}>
+                    <p style={{ fontSize: '13px', color: '#ffa500', margin: 0 }}>
+                      ℹ️ <strong>Note:</strong> After clicking the verification link in your email, you'll see a confirmation page. Simply click "Continue" or return to this page to sign in.
                     </p>
                   </div>
                 </>

@@ -51,8 +51,20 @@ export default function Login() {
         login(email, password);
         setSuccessMessage('Welcome back!');
       } else {
-        // Login failed - show error
-        setErrorMessage(result.error || 'Failed to sign in. Please check your credentials.');
+        // Login failed - show error with better message
+        const errorMsg = result.error || 'Failed to sign in. Please check your credentials.';
+        
+        // Handle specific Firebase errors
+        let friendlyMessage = errorMsg;
+        if (errorMsg.includes('auth/invalid-credential') || errorMsg.includes('invalid-credential')) {
+          friendlyMessage = 'Invalid email or password. Please try again.';
+        } else if (errorMsg.includes('auth/user-not-found')) {
+          friendlyMessage = 'No account found with this email address.';
+        } else if (errorMsg.includes('auth/wrong-password')) {
+          friendlyMessage = 'Incorrect password. Please try again.';
+        }
+        
+        setErrorMessage(friendlyMessage);
       }
     } catch (error) {
       setErrorMessage('An unexpected error occurred. Please try again.');

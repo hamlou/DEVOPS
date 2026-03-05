@@ -9,7 +9,22 @@ const UserContext = createContext();
 export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(() => {
     const saved = localStorage.getItem('tfc_user');
-    return saved ? JSON.parse(saved) : null;
+    if (saved) {
+      const userData = JSON.parse(saved);
+      // Check if session has expired (24 hours = 86400000 ms)
+      const sessionExpiry = userData.sessionExpiry || 0;
+      const now = Date.now();
+      
+      if (now > sessionExpiry) {
+        // Session expired
+        console.log('Session expired. Clearing user data.');
+        localStorage.removeItem('tfc_user');
+        return null;
+      }
+      
+      return userData;
+    }
+    return null;
   });
 
   // Listen to Firebase auth state changes
@@ -63,7 +78,8 @@ export const UserProvider = ({ children }) => {
       plan: 'Basic',
       role: email.includes('admin') ? 'admin' : 'user',
       points: 100,
-      joinedDate: new Date().toISOString()
+      joinedDate: new Date().toISOString(),
+      sessionExpiry: Date.now() + (24 * 60 * 60 * 1000) // 24 hours from now
     };
     setUser(userData);
   };
@@ -72,6 +88,7 @@ export const UserProvider = ({ children }) => {
     setUser(null);
     setWatchHistory([]);
     setMyList([]);
+    localStorage.removeItem('tfc_user'); // Clear stored session
   };
 
   const updateProfile = (newData) => {

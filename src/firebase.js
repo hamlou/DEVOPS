@@ -29,6 +29,8 @@ export const signUp = async (email, password) => {
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
     
     // Send verification email with link
+    // For localhost development, we'll use a simpler approach
+    // The verification will be handled by listening to auth state changes
     await sendEmailVerification(userCredential.user);
     
     return { 
