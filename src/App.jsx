@@ -24,6 +24,7 @@ import Analytics from './pages/admin/Analytics';
 
 import LogoutModal from './components/LogoutModal';
 import MmaLanding from './pages/MmaLanding';
+import VerifyEmail from './pages/VerifyEmail';
 
 const AppRoutes = () => {
 
@@ -68,11 +69,13 @@ const AppRoutes = () => {
       ) : (
         <Routes>
           <Route path="/login" element={<Login />} />
+          <Route path="/verify-email" element={<VerifyEmail />} />
           <Route path="/mma" element={<MmaLanding />} />
           <Route path="*" element={<Navigate to="/login" />} />
         </Routes>
       )}
 
+      {/* Logout modal should be available for both authenticated and non-authenticated users */}
       <LogoutModal 
         isOpen={isLogoutModalOpen}
         onClose={() => {

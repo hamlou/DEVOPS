@@ -1,4 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { auth } from '../firebase';
+import { onAuthStateChanged } from 'firebase/auth';
 import { simulatePayment, simulateRedeemReward } from '../services/mockData';
 
 
@@ -9,6 +11,22 @@ export const UserProvider = ({ children }) => {
     const saved = localStorage.getItem('tfc_user');
     return saved ? JSON.parse(saved) : null;
   });
+
+  // Listen to Firebase auth state changes
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
+      if (firebaseUser) {
+        // User is signed in to Firebase but not in our app context
+        // Don't auto-login, just log for verification flow
+        console.log('Firebase user:', firebaseUser.email);
+      } else {
+        // User signed out from Firebase
+        console.log('Firebase user signed out');
+      }
+    });
+
+    return () => unsubscribe();
+  }, []);
 
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
 

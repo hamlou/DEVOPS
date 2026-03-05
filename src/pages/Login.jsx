@@ -1,11 +1,13 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useUser } from '../context/UserContext';
+import { useNavigate } from 'react-router-dom';
 import SEO from '../components/SEO';
 import { signIn, signUp, signInWithGoogle } from '../firebase';
 import './Login.css';
 
 export default function Login() {
   const { login } = useUser();
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('login'); // 'login' or 'signup'
 
   // Firebase authentication state
@@ -108,21 +110,25 @@ export default function Login() {
 
     try {
       const result = await signUp(email, password);
+      console.log('Signup result:', result);
       
       if (result.success) {
-        // Signup successful - show success message and switch to login tab
-        setSuccessMessage('Account created successfully! You can now sign in.');
-        setActiveTab('login');
+        console.log('Navigating to /verify-email with email:', email);
+        // Signup successful - redirect to verification page with credentials
+        navigate('/verify-email', { state: { email, password } });
       } else {
         // Signup failed - show error
         setErrorMessage(result.error || 'Failed to create account. Please try again.');
       }
     } catch (error) {
+      console.error('Signup error:', error);
       setErrorMessage('An unexpected error occurred. Please try again.');
     } finally {
       setIsLoading(false);
     }
   };
+
+
 
   const handleGoogleSignIn = async () => {
     setIsLoading(true);
@@ -193,12 +199,12 @@ export default function Login() {
           >
             {/* Error/Success Messages */}
             {errorMessage && (
-              <div style={{ background: '#e01818', color: 'white', padding: '12px', borderRadius: '8px', marginBottom: '16px', textAlign: 'center' }}>
+              <div style={{ background: '#e01818', color: 'white', padding: '12px', borderRadius: '8px', marginBottom: '16px', textAlign: 'center', border: '2px solid #8b0000' }}>
                 {errorMessage}
               </div>
             )}
             {successMessage && (
-              <div style={{ background: '#55d080', color: 'white', padding: '12px', borderRadius: '8px', marginBottom: '16px', textAlign: 'center' }}>
+              <div style={{ background: '#1a1a1a', color: '#e01818', padding: '12px', borderRadius: '8px', marginBottom: '16px', textAlign: 'center', border: '2px solid #e01818', fontWeight: '600' }}>
                 {successMessage}
               </div>
             )}
@@ -268,12 +274,12 @@ export default function Login() {
           >
             {/* Error/Success Messages */}
             {errorMessage && (
-              <div style={{ background: '#e01818', color: 'white', padding: '12px', borderRadius: '8px', marginBottom: '16px', textAlign: 'center' }}>
+              <div style={{ background: '#e01818', color: 'white', padding: '12px', borderRadius: '8px', marginBottom: '16px', textAlign: 'center', border: '2px solid #8b0000' }}>
                 {errorMessage}
               </div>
             )}
             {successMessage && (
-              <div style={{ background: '#55d080', color: 'white', padding: '12px', borderRadius: '8px', marginBottom: '16px', textAlign: 'center' }}>
+              <div style={{ background: '#1a1a1a', color: '#e01818', padding: '12px', borderRadius: '8px', marginBottom: '16px', textAlign: 'center', border: '2px solid #e01818', fontWeight: '600' }}>
                 {successMessage}
               </div>
             )}
